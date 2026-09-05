@@ -664,6 +664,36 @@ data[i] += 1;
 - 循环范围必须是 `i < count`，以免访问 `data[count]` 导致越界；
 - 若函数只读取数组，参数写成 `const int *data`；本题需要修改数组，所以不能加 `const`。
 
+### 结构体数组统计超温数量
+
+题目：统计结构体数组中温度大于等于 `80` 的传感器数量。
+
+```c
+int count_over_temperature(const Sensor *sensors, int count)
+{
+    int over_count = 0;
+
+    for (int i = 0; i < count; i++)
+    {
+        if (sensors[i].temperature >= 80)
+        {
+            over_count++;
+        }
+    }
+
+    return over_count;
+}
+```
+
+要点：
+
+- `Sensor` 是类型名，`sensors` 才是函数参数中的结构体数组；
+- `sensors[i]` 表示第 `i` 个结构体对象，因此用 `.` 访问成员：`sensors[i].temperature`；
+- 如果变量本身是结构体指针，才使用 `sensor->temperature`；
+- `sensor->temperature` 等价于 `(*sensor).temperature`；
+- `over_count++` 让计数值增加 1；
+- `if` 代码块结尾的 `}` 后不需要额外加分号。
+
 ## 下次继续的位置
 
-下一题：统计结构体数组中温度大于等于 `80` 的传感器数量。
+下一题：复习 `const` 数组指针，判断函数能不能修改传入的数组。
