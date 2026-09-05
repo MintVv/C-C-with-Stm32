@@ -728,6 +728,41 @@ void clear_data(int *data, int count)
 - `int *data`：允许读取，也允许修改数据；
 - `const` 与 `count` 是否大于 0 无关，它在编译阶段限制写操作。
 
+### `const` 的编译期限制
+
+题目：判断下面函数能否正常编译。
+
+```c
+int get_temperature(const Sensor *sensor)
+{
+    if (sensor->temperature >= 80)
+    {
+        sensor->alarm = 1;    // 编译错误
+    }
+
+    return sensor->temperature;
+}
+```
+
+答案：不能正常编译。
+
+`const Sensor *sensor` 表示不能通过 `sensor` 修改结构体的任何成员。即使温度小于 `80`、运行时不会进入 `if`，编译器仍然会检查这行赋值，因此 `const` 的限制与运行时条件无关。
+
+如果函数需要修改 `alarm`，参数应改为：
+
+```c
+Sensor *sensor
+```
+
+如果函数只负责读取温度，则保留 `const` 并删除修改操作：
+
+```c
+int get_temperature(const Sensor *sensor)
+{
+    return sensor->temperature;
+}
+```
+
 ## 下次继续的位置
 
-下一题：练习 `const`、指针和函数返回值，判断一个只读函数是否能修改传入的传感器数据。
+下一题：复习 `static` 局部变量，判断函数多次调用后的结果。
