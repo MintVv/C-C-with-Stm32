@@ -763,6 +763,34 @@ int get_temperature(const Sensor *sensor)
 }
 ```
 
+### `static` 局部变量的值会保留
+
+题目：判断函数连续调用三次时的输出。
+
+```c
+void update_temperature(void)
+{
+    static int temperature = 20;
+
+    temperature = temperature + 5;
+    printf("%d ", temperature);
+}
+```
+
+答案：
+
+```text
+25 30 35
+```
+
+原因：`static` 局部变量只初始化一次。第一次调用后 `temperature` 变成 `25`，函数返回时它的值不会消失；第二次从 `25` 继续加到 `30`，第三次从 `30` 继续加到 `35`。
+
+要点：
+
+- `static` 局部变量的生命周期贯穿整个程序运行期间；
+- 它的作用域仍然限制在当前函数内，函数外不能直接访问；
+- 普通局部变量每次进入函数都会重新创建和初始化。
+
 ## 下次继续的位置
 
-下一题：复习 `static` 局部变量，判断函数多次调用后的结果。
+下一题：比较普通局部变量、`static` 局部变量和全局变量的作用域与生命周期。
