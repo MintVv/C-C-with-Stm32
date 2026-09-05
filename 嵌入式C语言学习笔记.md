@@ -694,6 +694,40 @@ int count_over_temperature(const Sensor *sensors, int count)
 - `over_count++` 让计数值增加 1；
 - `if` 代码块结尾的 `}` 后不需要额外加分号。
 
+### `const` 数组指针
+
+题目：判断下面函数能否清空传入的数组。
+
+```c
+void clear_data(const int *data, int count)
+{
+    for (int i = 0; i < count; i++)
+    {
+        data[i] = 0;    // 编译错误
+    }
+}
+```
+
+答案：不能正常编译。
+
+`const int *data` 表示通过 `data` 只能读取数组元素，不能修改数组元素。若函数需要清空数组，应去掉 `const`：
+
+```c
+void clear_data(int *data, int count)
+{
+    for (int i = 0; i < count; i++)
+    {
+        data[i] = 0;
+    }
+}
+```
+
+要点：
+
+- `const int *data`：允许读取，不允许通过 `data` 修改数据；
+- `int *data`：允许读取，也允许修改数据；
+- `const` 与 `count` 是否大于 0 无关，它在编译阶段限制写操作。
+
 ## 下次继续的位置
 
-下一题：复习 `const` 数组指针，判断函数能不能修改传入的数组。
+下一题：练习 `const`、指针和函数返回值，判断一个只读函数是否能修改传入的传感器数据。
