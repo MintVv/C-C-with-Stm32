@@ -1023,4 +1023,50 @@ for (int i = 0; i < 5; i++)
 | 3 | 无匹配 | 输出 3 |
 | 4 | `break` | 结束循环 |
 
-下一题：写一个 `switch` 结构，根据命令字执行不同动作。
+### `switch` 与 `enum`
+
+题目：根据命令值判断输出。
+
+```c
+typedef enum
+{
+    CMD_NONE = 0,
+    CMD_READ,
+    CMD_RESET
+} Command;
+```
+
+```c
+void handle(Command cmd)
+{
+    switch (cmd)
+    {
+        case CMD_READ:
+            printf("read");
+            break;
+
+        case CMD_RESET:
+            printf("reset");
+            break;
+
+        default:
+            printf("unknown");
+            break;
+    }
+}
+```
+
+结果：
+
+- `handle(CMD_READ)` 输出 `read`；
+- `handle(CMD_NONE)` 输出 `unknown`（进入 `default`）。
+
+要点：
+
+- `switch` 按值匹配 `case` 分支；
+- 每个 `case` 结尾要 `break;`，否则会继续执行下一个 `case`；
+- `default` 处理没有匹配项；
+- `enum` 给常量命名，比直接写数字更清晰；
+- 设备接收上位机命令时，常用 `switch-case` 判断命令字。
+
+下一题：练习位运算，把状态字的某一位清 0。
