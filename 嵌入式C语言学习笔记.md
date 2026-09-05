@@ -850,6 +850,42 @@ extern int temperature;
 - 普通全局变量：**当前文件定义位置之后可见，其他 `.c` 文件可用 `extern` 访问**；
 - `static` 局部变量：**当前函数内部可见，但值会保留**。
 
+### `.c` 与 `.h` 文件的职责
+
+题目：温度传感器模块为什么把 `temperature` 声明成 `static`。
+
+`sensor.h`：
+
+```c
+void sensor_init(void);
+int  sensor_get_temperature(void);
+```
+
+`sensor.c`：
+
+```c
+static int temperature = 0;
+
+void sensor_init(void)
+{
+    temperature = 25;
+}
+
+int sensor_get_temperature(void)
+{
+    return temperature;
+}
+```
+
+答案：`temperature` 只能在 `sensor.c` 内部使用，对外只暴露 `sensor_get_temperature()` 接口。
+
+要点：
+
+- `.h` 文件：声明对外公开的接口，其他 `.c` 文件通过 `#include` 使用；
+- `.c` 文件：实现具体逻辑，内部变量和辅助函数用 `static` 限制在文件内；
+- 这样既能隐藏内部实现，又能防止其他模块随意修改或依赖内部变量；
+- 外部模块只能通过接口函数访问，便于后续修改内部结构而不影响其他文件。
+
 ## 下次继续的位置
 
-下一题：理解 `.c` 和 `.h` 文件的职责，并判断一个模块设计是否合理。
+下一题：写一个函数把数组按下标从大到小输出，复习循环、数组和函数。
