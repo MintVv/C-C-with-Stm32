@@ -1286,4 +1286,58 @@ if (calc_sum == sum)
 }
 ```
 
-下一题：把校验通过的帧交给 `switch` 分派处理。
+### 用 `switch` 分派命令
+
+题目：根据命令字执行对应动作。
+
+```c
+uint8_t frame[4] = {0xAA, 0x01, 0x01, 0x02};
+
+uint8_t cmd = frame[2];
+```
+
+```c
+#define CMD_READ_TEMP   0x01
+#define CMD_READ_ALARM  0x02
+#define CMD_RESET       0x03
+```
+
+答案：
+
+```c
+void handle_cmd(uint8_t cmd)
+{
+    switch (cmd)
+    {
+        case 0x01:
+            send_temperature();
+            break;
+
+        case 0x02:
+            send_alarm();
+            break;
+
+        case 0x03:
+            do_reset();
+            break;
+
+        default:
+            send_error();
+            break;
+    }
+}
+```
+
+要点：
+
+- 每个 `case` 末尾都要 `break;`，否则会继续执行下一个 `case`；
+- `default` 处理未定义的命令，避免无响应；
+- 工程中更推荐用宏名代替裸数字，可读性更好，协议变更时只改一处：
+
+```c
+case CMD_READ_TEMP:
+    send_temperature();
+    break;
+```
+
+下一题：写一个 `for` 循环计算数组元素个数并防止越界。
