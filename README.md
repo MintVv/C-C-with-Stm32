@@ -25,30 +25,29 @@ build.bat code\lesson_byte_split.c
 
 ## 与 GitHub 同步
 
-本机 `hosts` 把 `github.com` 等域名全部指向 `127.0.0.1`（且没有本地代理在 443 端口监听），
-所以 git 直连 github.com 会失败。本仓库的 `origin` 因此配成“拉取走镜像、推送走 GitHub”：
-
-```text
-fetch: https://ghproxy.net/https://github.com/MintVv/C-C-with-Stm32.git
-push : https://github.com/MintVv/C-C-with-Stm32.git
-```
+`origin` 指向 GitHub 官方地址：
 
 ```bat
-git pull     :: 走镜像，当前可用
-git push     :: 走真实 GitHub，需要在能直连时执行
+git pull
+git push
 ```
 
-要恢复直连，二选一：
+注意：本机 `hosts` 把 `github.com` 等域名全部指向 `127.0.0.1`，直连会失败。
+解决方法是开启加速器接管这些域名：
 
-1. 打开 Steam++（Watt Toolkit）→ 网络加速 → 勾选 GitHub；
-2. 清掉 `C:\Windows\System32\drivers\etc\hosts` 里所有 github 相关的行（需要管理员权限）。
+1. 打开 Steam++（Watt Toolkit）；
+2. 网络加速 → 勾选 GitHub。
 
-## 待推送内容
+开启后它会监听本机 443 端口，git 直连即可正常工作（2026-10-15 实测通过）。
 
-本地 `main` 领先 `origin/main` 1 个提交：
+如果一时连不上，还可以走镜像**只做拉取**（镜像不支持推送）：
 
-```text
-3077c34  2026-09-29  Record 16 bit byte assembly exercise
+```bat
+git fetch mirror
 ```
 
-这个提交只在本机，GitHub 上还没有，注意别把本地目录删了。
+`mirror` = `https://ghproxy.net/https://github.com/MintVv/C-C-with-Stm32.git`
+
+## 同步状态
+
+本地 `main` 与 `origin/main` 一致，全部提交都已推送到 GitHub。
